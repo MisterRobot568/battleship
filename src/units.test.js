@@ -142,6 +142,7 @@ describe('GameBoard receiveAttack() error handling', () => {
 });
 
 describe('GameBoard isSunk testing', () => {
+    let gameBoard;
     beforeEach(() => {
         gameBoard = new GameBoard();
     });
