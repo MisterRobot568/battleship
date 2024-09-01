@@ -7,8 +7,10 @@ class Player {
         this.playerID = playerID;
         this.gridID = gridID;
         this.boardHTML = document.querySelector(`#${this.gridID}`);
+
+        // bind handleclick method to the instance of the player classoka
         this.handleClick = this.handleClick.bind(this);
-        // this.myTurn = false;
+        this.myTurn = false;
     }
     // testing the dom stuff is outside the scope of this project.
     // method that renders the current state of the gameBoard
@@ -121,6 +123,7 @@ class Player {
         currentTile.classList.add('clicked');
 
         currentTile.removeEventListener('click', this.handleClick);
+        // TOGGLE PLAYER TURN HERE (after a successful move?)
 
         this.updateBoard();
     }
