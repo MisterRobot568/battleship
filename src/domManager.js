@@ -20,6 +20,7 @@ class DomManager {
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 const newTile = document.createElement('div');
+                newTile.setAttribute('class', 'tile');
                 newTile.setAttribute('id', `${this.gridID}-tile-${i}${j}`);
                 newTile.textContent = this.player.gameBoard.board[i][j];
                 this.boardHTML.appendChild(newTile);

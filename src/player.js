@@ -2,15 +2,29 @@ const { GameBoard } = require('./gameBoard');
 // import GameBoard from './gameBoard.js';
 class Player {
     // there will be two types of players. Real players and computer players
-    constructor(playerID, gridID) {
+    constructor(playerID, gridID, isHuman) {
         this.gameBoard = new GameBoard();
         this.playerID = playerID;
         this.gridID = gridID;
         this.boardHTML = document.querySelector(`#${this.gridID}`);
 
         // bind handleclick method to the instance of the player classoka
-        this.handleClick = this.handleClick.bind(this);
+        // this.handleClick = this.handleClick.bind(this);
         this.myTurn = false;
+        this.isHuman = isHuman;
+    }
+
+    botAttack() {
+        function generateCoords() {
+            const randomX = Math.floor(Math.random() * 10);
+            const randomY = Math.floor(Math.random() * 10);
+            return [randomX, randomY];
+        }
+        let [xCoord, yCoord] = generateCoords();
+        if (this.gameBoard.board[xCoord][yCoord]) {
+            [xCoord, yCoord] = generateCoords();
+        }
+        this.gameBoard.receiveAttack(xCoord, yCoord);
     }
     // testing the dom stuff is outside the scope of this project.
     // method that renders the current state of the gameBoard
