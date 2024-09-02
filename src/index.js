@@ -1,18 +1,22 @@
 const { Player } = require('./player');
 const { DomManager } = require('./domManager');
+const { GameController } = require('./gameController');
+const { startGame } = require('./gameController2');
 // 1 try to put pieces on the board
-console.log('testing');
+// console.log('testing');
 // 1) create the pieces, id the pieces, populate the pieces with 0s
+startGame();
+// let game = new GameController('player1', 'player2');
+// game.startGame();
+// const player1 = new Player('player1', 'grid-1');
+// console.log(player1.gridID);
+// // const player2 = new Player('player2', 'grid-2');
 
-const player1 = new Player('player1', 'grid-1');
-console.log(player1.gridID);
-// const player2 = new Player('player2', 'grid-2');
-
-const domManager1 = new DomManager(player1);
-domManager1.printTest();
-domManager1.renderBoard();
-player1.gameBoard.placeShip('test', 2, 2, 3, true);
-domManager1.updateBoard();
+// const domManager1 = new DomManager(player1);
+// domManager1.printTest();
+// domManager1.renderBoard();
+// player1.gameBoard.placeShip('test', 2, 2, 3, true);
+// domManager1.updateBoard();
 // player1.renderBoard();
 // player1.updateBoard();
 
