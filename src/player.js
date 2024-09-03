@@ -7,25 +7,71 @@ class Player {
         this.playerID = playerID;
         this.gridID = gridID;
         this.boardHTML = document.querySelector(`#${this.gridID}`);
+        this.ships = [
+            ['Carrier', 5, true],
+            ['Battleship', 4, false],
+            ['Destroyer', 3, true],
+            ['Submarine', 3, true],
+            ['Patrol Boat', 2, false],
+        ];
 
         // bind handleclick method to the instance of the player classoka
         // this.handleClick = this.handleClick.bind(this);
-        this.myTurn = false;
-        this.isHuman = isHuman;
+        this.myTurn = false; // don't need?
+        this.isHuman = isHuman; // don't need?
     }
 
     botAttack() {
-        function generateCoords() {
+        // this method makes the bot choose a spot and attack it on the board
+        // need to make this more sophisticated
+        function generateCoords(gameBoard_board) {
             const randomX = Math.floor(Math.random() * 10);
             const randomY = Math.floor(Math.random() * 10);
-            return [randomX, randomY];
+            if (
+                gameBoard_board[randomX][randomY] === 2 ||
+                gameBoard_board[randomX][randomY] === 3
+            ) {
+                // if gameBoard has already been hit here, then generate new coords
+                return generateCoords(gameBoard_board);
+            } else {
+                //otherwise, return these coords to attack
+                return [randomX, randomY];
+            }
         }
-        let [xCoord, yCoord] = generateCoords();
-        if (this.gameBoard.board[xCoord][yCoord]) {
-            [xCoord, yCoord] = generateCoords();
-        }
-        this.gameBoard.receiveAttack(xCoord, yCoord);
+        let [xCoord, yCoord] = generateCoords(this.gameBoard.board);
+        // if (this.gameBoard.board[xCoord][yCoord]) {
+        //     [xCoord, yCoord] = generateCoords();
+        // }
+        this.gameBoard.receiveAttack(yCoord, xCoord);
     }
+
+    // placeShipsRandomly() {
+    //     // 1) generate random coordinates
+    //     // 2) generate all coordinates for the boat based on random coords
+    //     // 3) check if all random cooords are water
+    //     // 4) if yes, place. If no, start from step 1
+    //     function placeShips(gameBoard) {
+    //         const randomX = Math.floor(Math.random() * 10);
+    //         const randomY = Math.floor(Math.random() * 10);
+    //         for (let i = 0; i < this.ships.length; i++) {
+    //             try{gameBoard.placeShips(this.ships[i][0], randomX,randomY,this.ships[i][1],this.ships[i][2])
+    //         } catch (error){
+
+    //         }
+    //     }
+    //     function placeShip(gameBoard, ship){
+    //         const randomX = Math.floor(Math.random() * 10);
+    //         const randomY = Math.floor(Math.random() * 10);
+    //         try{gameBoard.placeShip(ship[0], randomX,randomY,ship[1],ship[2])
+    //         } catch (error){
+
+    //         }
+    //     }
+    // }
+
+    // randomShipPlacement() {
+    //     // this method will place the ships randomly on the board
+    // }
     // testing the dom stuff is outside the scope of this project.
     // method that renders the current state of the gameBoard
     renderBoard() {

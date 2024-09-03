@@ -24,6 +24,14 @@ function initialSetup() {
     // 1)
     // domManager1.renderBoard();
     // domManager2.renderBoard();
+
+    //give the bot a random setup
+    player2.gameBoard.generateRandomSetup();
+    domManager2.updateBoard();
+
+    //player gets a random setup for testing
+    player1.gameBoard.generateRandomSetup();
+    domManager1.updateBoard();
 }
 function playGame() {
     // this function will handle the attack gameplay loop
@@ -47,10 +55,11 @@ function playGame() {
         [y, x] = getTileCoordinates(tile);
         player2.gameBoard.receiveAttack(x, y);
         domManager2.updateBoard();
-        // 2) we check if attacker has won
+        // 2) we check if player has won
         if (player2.gameBoard.shipsSunk()) {
             // end the game
             // create method in domManager() to display end screen
+            console.log('player1 wins'); // WIN TRIGGERS PROPERLY
         }
 
         // 3) we let the bot attack, then check if the bot has won. If so, end the game
@@ -64,6 +73,7 @@ function playGame() {
         domManager1.updateBoard();
         if (player1.gameBoard.shipsSunk()) {
             // end game bot wins
+            console.log('bot wins');
         }
     });
     // if (!player2.ishuman) {

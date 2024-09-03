@@ -20,6 +20,15 @@ class GameBoard {
         // use an object to store the ships?
         // this.shipsObj = {};
         this.shipsMap = new Map();
+
+        this.ships = [
+            // [shipname, length, horizontal or not]
+            ['Carrier', 5, true],
+            ['Battleship', 4, false],
+            ['Destroyer', 3, true],
+            ['Submarine', 3, true],
+            ['Patrol Boat', 2, false],
+        ];
     }
     // should be able to place ships at specific coords by calling the ship class
     // need to make sure ship is placed on valid coords, not outside the board
@@ -36,50 +45,6 @@ class GameBoard {
         // 4) ships cannot be on top of each other, no pair of coords
         //    from one ship can match those of anther ship
 
-        // MAYBE THIS STUFF SHOULD BE CHECKED IN THE PLAYER or GAME CLASS?
-        // inside this method check:
-        // 1) pieces are not being placed on top of other pieces
-        // 2)
-        // let ship = new Ship(xCoords.length);
-        // if (xCoords.length !== yCoords.length) {
-        //     throw new Error('Placeship coordinate length mismatch');
-        // }
-        // xCoords.forEach((x) => {
-        //     if (x < 0) {
-        //         throw new Error('x coord out of bounds');
-        //     }
-        // });
-        // for (let i = 0; i < xCoords.length; i++) {
-        //     if (xCoords[i] < 0 || xCoords[i] > 9) {
-        //         throw new Error('x coord out of bounds');
-        //     }
-        //     if (yCoords[i] < 0 || yCoords[i] > 9) {
-        //         throw new Error('y coord out of bounds');
-        //     }
-        // }
-        // //check if each coordinate is touching the other
-        // function checkArray(array) {
-        //     for (let i = 0; i < array.length - 1; i++) {
-        //         if (array[i] > array[i + 1] + 1) {
-        //             return false;
-        //         }
-        //     }
-        // }
-        // this.shipsObj.ship = new Ship(xCoords.length);
-        // this.shipsObj.xCoordinates = xCoords;
-        // this.shipsObj.yCoordinates = yCoords;
-
-        // // place the ship on the board
-        // for (let i = 0; i < xCoords.length; i++) {
-        //     if (this.board[yCoords[i]][xCoords[i]] === 1) {
-        //         throw new Error('Overlapping ships');
-        //     } else {
-        //         this.board[yCoords[i]][xCoords[i]] = 1;
-        // }
-        // let ship = new Ship(shipName, xCoords.length);
-        // for (let i = 0; i < xCoords.length; i++) {
-        //     this.board[yCoords[i]][xCoords[i]] = ship;
-        // }
         ////////////////////////////////////////
         // places pieces on board based on original coords, and
         // horizontal/vertical
@@ -106,6 +71,26 @@ class GameBoard {
                 // this.shipsMap.get(ship).push({ x: posX, y: posY });
             } else {
                 throw new Error('Overlapping ships error');
+            }
+        }
+    }
+
+    generateRandomSetup() {
+        // given a list of ships, generate a random setup for them
+        let ships = this.ships;
+        for (let i = 0; i < ships.length; i++) {
+            // let {name, length} = ships[i]
+            // placeShipRandomly(ships[i][0], ships[i][1], ships[i][2]);
+            placeShipRandomly.call(this, ships[i][0], ships[i][1], ships[i][2]);
+        }
+        function placeShipRandomly(shipName, length, horizontal) {
+            const randomX = Math.floor(Math.random() * 10);
+            const randomY = Math.floor(Math.random() * 10);
+            try {
+                this.placeShip(shipName, randomX, randomY, length, horizontal);
+            } catch (error) {
+                // return placeShipRandomly(shipName, length, horizontal);
+                placeShipRandomly.call(this, shipName, length, horizontal);
             }
         }
     }
