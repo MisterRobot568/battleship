@@ -68,10 +68,15 @@ class GameBoard {
     }
 
     deleteShip(shipName, x, y, length, horizontal) {
-        //need method to delete a ship so that we can drag/drop place ships
+        // need method to delete a ship so that we can drag/drop place ships
+        // This method will delete a ship if it maches the name inputted
         for (let i = 0; i < length; i++) {
             const posX = horizontal ? x + i : x;
             const posY = horizontal ? y : y + i;
+            if (posX < 0 || posY < 0 || posX > 9 || posY > 9) {
+                // can only delete within the bounds of the board
+                continue;
+            }
             if (this.board[posY][posX] === shipName) {
                 this.board[posY][posX] = 0;
             }

@@ -9,12 +9,21 @@ let domManager1 = new DomManager(player1);
 let domManager2 = new DomManager(player2);
 domManager1.renderBoard();
 domManager2.renderBoard();
+let shipOrientation = false;
+let placeAble = false;
+// placeAble is a global variabletells us whether or not we can place
+// a piece on a board
 
 function startGame() {
     // initial setup function (where board is set up initially)
     initialSetup();
     playGame();
     playerSetupBoard();
+}
+let rotateBtn = document.querySelector('#rotate-btn');
+rotateBtn.addEventListener('click', rotateShip);
+function rotateShip() {
+    shipOrientation = shipOrientation ? false : true;
 }
 
 function initialSetup() {
@@ -150,25 +159,34 @@ function playerSetupBoard() {
 function handleMouseOver(event) {
     const tile = event.target;
     if (tile.classList.contains('tile')) {
+        // placeAble = true;
         //makes sure we're on a tile and in between
         const [y, x] = getTileCoordinates(tile);
         const currentShip = ships[currentShipIndex];
 
-        if (tile.classList.contains('ship')) {
-            // if ship is already there, do nothing
-            return;
-        } else {
+        // if (tile.classList.contains('ship')) {
+        //     // if ship is already there, do nothing
+        //     // if ship would be placed out of bounds, do nothing
+        //     return;
+        // } else {
+        try {
+            // if hovering a ship gives us an error, then don't
             player1.gameBoard.placeShip(
                 currentShip[0],
                 x,
                 y,
                 currentShip[1],
-                currentShip[2]
+                shipOrientation
             );
             domManager1.updateBoard();
+            placeAble = true;
+        } catch (error) {
+            placeAble = false;
+            return;
         }
     }
 }
+// }
 function handleMouseOut(event) {
     const tile = event.target;
     if (tile.classList.contains('tile')) {
@@ -183,14 +201,17 @@ function handleMouseOut(event) {
             const [y, x] = getTileCoordinates(tile);
             const currentShip = ships[currentShipIndex];
             // Remove ship preview
-            player1.gameBoard.deleteShip(
-                currentShip[0],
-                x,
-                y,
-                currentShip[1],
-                currentShip[2]
-            );
-            domManager1.updateBoard();
+            if (~placeAble) {
+                player1.gameBoard.deleteShip(
+                    currentShip[0],
+                    x,
+                    y,
+                    currentShip[1],
+                    // currentShip[2]
+                    shipOrientation
+                );
+                domManager1.updateBoard();
+            }
         }
         // PROBLEM: we have made it so that .deleteShip will ignore a ship where
         //          our cursor is, but delete parts of the ship where our cursor is
@@ -204,38 +225,50 @@ function handleMouseOut(event) {
 // BUT ALSO NOT AFFECT THE BOATS THAT ARE ALREADY ON THE BOARD
 // CREATE AN ARRAY THAT CONTAINS THE BOATS THAT ARE ALREADY ON THE BOARD
 function handleMouseClick(event) {
+    // IF PLACING A SHIP WOULD TRIGGER AN ERROR, WE JUST RETURN
+    // IF SHIP NOT ACTUALLY PLACED, THEN WE DON'T REACT TO CLICK
     const tile = event.target;
     if (tile.classList.contains('tile')) {
         // deactive hover effects when clicked
-        playerBoard.removeEventListener('mouseover', handleMouseOver);
-        playerBoard.removeEventListener('mouseout', handleMouseOut);
+        // if (~tile.classList.contains('ship')) {
+        //     return;
+        // } else {
+        if (placeAble) {
+            playerBoard.removeEventListener('mouseover', handleMouseOver);
+            playerBoard.removeEventListener('mouseout', handleMouseOut);
 
-        const [y, x] = getTileCoordinates(tile);
-        const currentShip = ships[currentShipIndex];
-        on_board_array.push(currentShip[0]);
+            // const [y, x] = getTileCoordinates(tile);
+            const currentShip = ships[currentShipIndex];
+            on_board_array.push(currentShip[0]);
 
-        // player1.gameBoard.placeShip(
-        //     currentShip[0],
-        //     x,
-        //     y,
-        //     currentShip[1],
-        //     currentShip[2]
-        // );
-        domManager1.updateClassList();
-        // this will add the current
+            // player1.gameBoard.placeShip(
+            //     currentShip[0],
+            //     x,
+            //     y,
+            //     currentShip[1],
+            //     currentShip[2]
+            // );
+            domManager1.updateClassList();
+            // this will add the current
 
-        domManager1.updateBoard();
+            domManager1.updateBoard();
 
-        currentShipIndex++;
+            currentShipIndex++;
 
-        if (currentShipIndex >= ships.length) {
-            removeEventListeners();
+            if (currentShipIndex >= ships.length) {
+                // if we've run out of ships, remove event listeners
+                removeEventListeners();
+            } else {
+                // Re-activate hover effects for the next ship
+                playerBoard.addEventListener('mouseover', handleMouseOver);
+                playerBoard.addEventListener('mouseout', handleMouseOut);
+            }
+            placeAble = false;
         } else {
-            // Re-activate hover effects for the next ship
-            playerBoard.addEventListener('mouseover', handleMouseOver);
-            playerBoard.addEventListener('mouseout', handleMouseOut);
+            return;
         }
     }
+    // }
 }
 function placeShipEventListeners() {
     playerBoard.addEventListener('mouseover', handleMouseOver);
