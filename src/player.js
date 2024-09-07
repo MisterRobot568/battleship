@@ -159,59 +159,59 @@ class Player {
     //         }
     //     }
     // }
-    getTileCoordinates(tile) {
-        console.log(tile);
-        const [i, j] = tile.id.split('-').pop().split('');
-        console.log(tile.id);
-        console.log([parseInt(i, 10), parseInt(j, 10)]);
-        return [parseInt(i, 10), parseInt(j, 10)];
-    }
-    handleClick(event) {
-        const currentTile = event.currentTarget;
-        console.log(currentTile.id);
+    // getTileCoordinates(tile) {
+    //     console.log(tile);
+    //     const [i, j] = tile.id.split('-').pop().split('');
+    //     console.log(tile.id);
+    //     console.log([parseInt(i, 10), parseInt(j, 10)]);
+    //     return [parseInt(i, 10), parseInt(j, 10)];
+    // }
+    // handleClick(event) {
+    //     const currentTile = event.currentTarget;
+    //     console.log(currentTile.id);
 
-        const [a, b] = currentTile.id.split('-').pop().split('');
-        console.log(typeof a);
-        console.log(b);
-        // let [i, j] = [parseInt(a, 10), parseInt(b, 10)];
-        // console.log(i);
-        // console.log(typeof i);
-        const [i, j] = this.getTileCoordinates(currentTile);
-        console.log(this.gameBoard);
-        this.gameBoard.receiveAttack(j, i);
+    //     const [a, b] = currentTile.id.split('-').pop().split('');
+    //     console.log(typeof a);
+    //     console.log(b);
+    //     // let [i, j] = [parseInt(a, 10), parseInt(b, 10)];
+    //     // console.log(i);
+    //     // console.log(typeof i);
+    //     const [i, j] = this.getTileCoordinates(currentTile);
+    //     console.log(this.gameBoard);
+    //     this.gameBoard.receiveAttack(j, i);
 
-        currentTile.classList.add('clicked');
+    //     currentTile.classList.add('clicked');
 
-        currentTile.removeEventListener('click', this.handleClick);
-        // TOGGLE PLAYER TURN HERE (after a successful move?)
+    //     currentTile.removeEventListener('click', this.handleClick);
+    //     // TOGGLE PLAYER TURN HERE (after a successful move?)
 
-        this.updateBoard();
-    }
+    //     this.updateBoard();
+    // }
 
-    createEventListeners() {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                let currentTile = document.querySelector(
-                    `#${this.gridID}-tile-${i}${j}`
-                );
+    // createEventListeners() {
+    //     for (let i = 0; i < 10; i++) {
+    //         for (let j = 0; j < 10; j++) {
+    //             let currentTile = document.querySelector(
+    //                 `#${this.gridID}-tile-${i}${j}`
+    //             );
 
-                if (currentTile.classList.contains('clicked')) {
-                    continue;
-                }
-                currentTile.addEventListener('click', this.handleClick);
-            }
-        }
-    }
-    removeListeners() {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                let currentTile = document.querySelector(
-                    `#${this.gridID}-tile-${i}${j}`
-                );
-                currentTile.removeEventListener('click', this.handleClick);
-            }
-        }
-    }
+    //             if (currentTile.classList.contains('clicked')) {
+    //                 continue;
+    //             }
+    //             currentTile.addEventListener('click', this.handleClick);
+    //         }
+    //     }
+    // }
+    // removeListeners() {
+    //     for (let i = 0; i < 10; i++) {
+    //         for (let j = 0; j < 10; j++) {
+    //             let currentTile = document.querySelector(
+    //                 `#${this.gridID}-tile-${i}${j}`
+    //             );
+    //             currentTile.removeEventListener('click', this.handleClick);
+    //         }
+    //     }
+    // }
 }
 
 module.exports = { Player };

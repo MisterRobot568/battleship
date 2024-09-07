@@ -22,7 +22,13 @@ class DomManager {
                 const newTile = document.createElement('div');
                 newTile.setAttribute('class', 'tile');
                 newTile.setAttribute('id', `${this.gridID}-tile-${i}${j}`);
-                newTile.textContent = this.player.gameBoard.board[i][j];
+
+                let newTextContent = this.player.gameBoard.board[i][j];
+                newTile.textContent = newTextContent;
+                // if (typeof newTextContent === 'string') {
+                //     newTile.classList.add('ship');
+                // }
+
                 this.boardHTML.appendChild(newTile);
             }
         }
@@ -34,6 +40,24 @@ class DomManager {
                     `#${this.player.gridID}-tile-${i}${j}`
                 );
                 currentTile.textContent = this.player.gameBoard.board[i][j];
+            }
+        }
+    }
+    updateClassList() {
+        // the purpose of this method is so that when a player is putting ships on the
+        // board, it add a 'ship' class to the tiles where the ships are
+        // that way we can differentiate between a 'hovered' ship and a 'clicked' ship
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                let currentTile = document.querySelector(
+                    `#${this.player.gridID}-tile-${i}${j}`
+                );
+                let tileTextContent = this.player.gameBoard.board[i][j];
+                // currentTile.textContent = this.player.gameBoard.board[i][j];
+                currentTile.textContent = tileTextContent;
+                if (typeof tileTextContent === 'string') {
+                    currentTile.classList.add('ship');
+                }
             }
         }
     }

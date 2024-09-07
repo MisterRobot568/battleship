@@ -102,6 +102,10 @@ describe('GameBoard placeShip() error handling', () => {
             gameBoard.placeShip('test2', 2, 2, 3, true);
         }).toThrow('Overlapping ships error');
     });
+    // test('GameBoard tests whether ships can be placed next to each other without erroring',()=>{
+    //     gameBoard.placeShip('
+    // })
+    // }
 });
 
 // gameBoard receiveAttack() testing

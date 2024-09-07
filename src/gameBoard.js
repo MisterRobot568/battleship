@@ -37,14 +37,6 @@ class GameBoard {
     // is placeship given one set of coordinates? or is given a Z number of coords
     // based on Z length of a ship?
     placeShip(shipName, x, y, length, horizontal) {
-        //assume we're given arrays of coordinates.
-        // 1) length of each array must match the ship length
-        // 2) length of each array must match each other
-        // 3) each set of coordinates in the array must touch horizontally or
-        //    vertically on the board (never diagnolly)
-        // 4) ships cannot be on top of each other, no pair of coords
-        //    from one ship can match those of anther ship
-
         ////////////////////////////////////////
         // places pieces on board based on original coords, and
         // horizontal/vertical
@@ -75,6 +67,18 @@ class GameBoard {
         }
     }
 
+    deleteShip(shipName, x, y, length, horizontal) {
+        //need method to delete a ship so that we can drag/drop place ships
+        for (let i = 0; i < length; i++) {
+            const posX = horizontal ? x + i : x;
+            const posY = horizontal ? y : y + i;
+            if (this.board[posY][posX] === shipName) {
+                this.board[posY][posX] = 0;
+            }
+            // this.board[posY][posX] = 0;
+        }
+    }
+
     generateRandomSetup() {
         // given a list of ships, generate a random setup for them
         let ships = this.ships;
@@ -82,6 +86,7 @@ class GameBoard {
             // let {name, length} = ships[i]
             // placeShipRandomly(ships[i][0], ships[i][1], ships[i][2]);
             placeShipRandomly.call(this, ships[i][0], ships[i][1], ships[i][2]);
+            //UNDERSTAND WHY WE'RE USING "CALL" and "THIS" HERE
         }
         function placeShipRandomly(shipName, length, horizontal) {
             const randomX = Math.floor(Math.random() * 10);
