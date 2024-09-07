@@ -45,60 +45,66 @@ class Player {
         this.gameBoard.receiveAttack(yCoord, xCoord);
     }
 
-    // placeShipsRandomly() {
-    //     // 1) generate random coordinates
-    //     // 2) generate all coordinates for the boat based on random coords
-    //     // 3) check if all random cooords are water
-    //     // 4) if yes, place. If no, start from step 1
-    //     function placeShips(gameBoard) {
-    //         const randomX = Math.floor(Math.random() * 10);
-    //         const randomY = Math.floor(Math.random() * 10);
-    //         for (let i = 0; i < this.ships.length; i++) {
-    //             try{gameBoard.placeShips(this.ships[i][0], randomX,randomY,this.ships[i][1],this.ships[i][2])
-    //         } catch (error){
-
-    //         }
-    //     }
-    //     function placeShip(gameBoard, ship){
-    //         const randomX = Math.floor(Math.random() * 10);
-    //         const randomY = Math.floor(Math.random() * 10);
-    //         try{gameBoard.placeShip(ship[0], randomX,randomY,ship[1],ship[2])
-    //         } catch (error){
-
-    //         }
-    //     }
-    // }
-
-    // randomShipPlacement() {
-    //     // this method will place the ships randomly on the board
-    // }
-    // testing the dom stuff is outside the scope of this project.
-    // method that renders the current state of the gameBoard
-    renderBoard() {
-        // const boardHTML = document.querySelector(`#${this.gridID}`);
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                const newTile = document.createElement('div');
-                newTile.setAttribute('id', `${this.gridID}-tile-${i}${j}`);
-                newTile.textContent = this.gameBoard.board[i][j];
-                this.boardHTML.appendChild(newTile);
-            }
+    generateRandomSetup() {
+        // given a list of ships, generate a random setup for them
+        let ships = this.ships;
+        let gameBoard = this.gameBoard;
+        for (let i = 0; i < ships.length; i++) {
+            // let {name, length} = ships[i]
+            // placeShipRandomly(ships[i][0], ships[i][1], ships[i][2]);
+            placeShipRandomly(ships[i][0], ships[i][1], ships[i][2], gameBoard);
+            //UNDERSTAND WHY WE'RE USING "CALL" and "THIS" HERE
         }
-    }
-
-    // we can create a method here to randomly place ships for the bot
-
-    // updateBoard() updates the html board based on what players GameBoard looks like
-    updateBoard() {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                let currentTile = document.querySelector(
-                    `#${this.gridID}-tile-${i}${j}`
+        function placeShipRandomly(shipName, length, horizontal, gameBoard) {
+            const randomX = Math.floor(Math.random() * 10);
+            const randomY = Math.floor(Math.random() * 10);
+            try {
+                gameBoard.placeShip(
+                    shipName,
+                    randomX,
+                    randomY,
+                    length,
+                    horizontal
                 );
-                currentTile.textContent = this.gameBoard.board[i][j];
+            } catch (error) {
+                gameBoard.deleteShip(
+                    shipName,
+                    randomX,
+                    randomY,
+                    length,
+                    horizontal
+                );
+                // return placeShipRandomly(shipName, length, horizontal);
+                placeShipRandomly(shipName, length, horizontal, gameBoard);
             }
         }
     }
+
+    // renderBoard() {
+    //     // const boardHTML = document.querySelector(`#${this.gridID}`);
+    //     for (let i = 0; i < 10; i++) {
+    //         for (let j = 0; j < 10; j++) {
+    //             const newTile = document.createElement('div');
+    //             newTile.setAttribute('id', `${this.gridID}-tile-${i}${j}`);
+    //             newTile.textContent = this.gameBoard.board[i][j];
+    //             this.boardHTML.appendChild(newTile);
+    //         }
+    //     }
+    // }
+
+    // // we can create a method here to randomly place ships for the bot
+
+    // // updateBoard() updates the html board based on what players GameBoard looks like
+    // updateBoard() {
+    //     for (let i = 0; i < 10; i++) {
+    //         for (let j = 0; j < 10; j++) {
+    //             let currentTile = document.querySelector(
+    //                 `#${this.gridID}-tile-${i}${j}`
+    //             );
+    //             currentTile.textContent = this.gameBoard.board[i][j];
+    //         }
+    //     }
+    // }
 
     // // create event listener
     // createEventListeners() {

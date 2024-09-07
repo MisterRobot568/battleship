@@ -43,31 +43,31 @@ startGame();
 // CREATE ANOTHER MODULE/CLASS/WHATEVER RESPONSIBLE FOR DOM MANIPULATION HERE
 // WE'LL HAVE TO TRANSLOCATE DOM METHODS IN PLAYER TO HERE
 // Event driven approach like chatgpt says:
-function createEventListeners(player) {
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            let currentTile = document.querySelector(
-                `#${player.gridID}-tile-${i}${j}`
-            );
+// function createEventListeners(player) {
+//     for (let i = 0; i < 10; i++) {
+//         for (let j = 0; j < 10; j++) {
+//             let currentTile = document.querySelector(
+//                 `#${player.gridID}-tile-${i}${j}`
+//             );
 
-            if (currentTile.classList.contains('clicked')) {
-                continue;
-            }
-            currentTile.addEventListener('click', player.handleClick);
-        }
-    }
-}
+//             if (currentTile.classList.contains('clicked')) {
+//                 continue;
+//             }
+//             currentTile.addEventListener('click', player.handleClick);
+//         }
+//     }
+// }
 
-function removeListeners(player) {
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            let currentTile = document.querySelector(
-                `#${player.gridID}-tile-${i}${j}`
-            );
-            currentTile.removeEventListener('click', player.handleClick);
-        }
-    }
-}
+// function removeListeners(player) {
+//     for (let i = 0; i < 10; i++) {
+//         for (let j = 0; j < 10; j++) {
+//             let currentTile = document.querySelector(
+//                 `#${player.gridID}-tile-${i}${j}`
+//             );
+//             currentTile.removeEventListener('click', player.handleClick);
+//         }
+//     }
+// }
 
 // while (!gameOver) {
 //     //We run the game inside of this loop.

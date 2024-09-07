@@ -61,6 +61,11 @@ class DomManager {
             }
         }
     }
+
+    announceWinner() {
+        // this method will create a screen for whoever won the game at the end
+        // probably with a button to play again
+    }
 }
 
 module.exports = { DomManager };
