@@ -2,8 +2,8 @@ const { GameBoard } = require('./gameBoard');
 const { Player } = require('./player');
 const { DomManager } = require('./domManager');
 //DISABLE TILES ON THE BOARD WITH CSS CLASSES
-const player1 = new Player('player1', 'grid-1', true);
-const player2 = new Player('player2', 'grid-2', false);
+let player1 = new Player('player1', 'grid-1', true);
+let player2 = new Player('player2', 'grid-2', false);
 
 let domManager1 = new DomManager(player1);
 let domManager2 = new DomManager(player2);
@@ -19,8 +19,45 @@ function startGame() {
     // initial setup function (where board is set up initially)
     // initialSetup();
     // attackLoop();
+    let resetGameBtn = document.querySelector('#reset-btn');
+    let modalResetGameBtn = document.querySelector('#modal-button');
+    resetGameBtn.addEventListener('click', () => {
+        location.reload();
+    });
+    modalResetGameBtn.addEventListener('click', () => {
+        // resetGame();
+        // let modal = document.querySelector('#modal');
+        // modal.style.display = 'none';
+        location.reload();
+    });
     botSetup();
     playerSetup();
+}
+function resetGame() {
+    // clear the boards of the players
+    domManager1.clearBoard();
+    domManager2.clearBoard();
+
+    // reset players
+    player1 = new Player('player1', 'grid-1', true);
+    player2 = new Player('player2', 'grid-2', false);
+
+    //reset player doms
+    domManager1 = new DomManager(player1);
+    domManager2 = new DomManager(player2);
+
+    // render new boards
+    domManager1.renderBoard();
+    domManager2.renderBoard();
+
+    // reset vars associated with event listeners
+    playerBoard = document.querySelector('#grid-1');
+    ships = player1.gameBoard.ships;
+    currentShipIndex = 0;
+    on_board_array = [];
+    placeAble = false;
+
+    startGame();
 }
 
 function rotateShip() {
@@ -31,7 +68,7 @@ function rotateShip() {
 function botSetup() {
     // this function will setup the bot's board
 
-    player2.generateRandomSetup();
+    player2.generateRandomSetup(); //////////////////////////////////////
     domManager2.updateBoard();
 }
 function attackLoop() {
@@ -60,14 +97,17 @@ function attackLoop() {
         if (player2.gameBoard.shipsSunk()) {
             // PLAYER WIN CONDITION
             console.log('player1 wins'); // WIN TRIGGERS PROPERLY
+            domManager1.announceWinner();
         }
 
         player1.botAttack();
         domManager1.updateBoard();
         // check if bot has won
+        console.log(player1.gameBoard.shipsSunk());
         if (player1.gameBoard.shipsSunk()) {
             // BOT WIN CONDITION
             console.log('bot wins');
+            domManager2.announceWinner();
         }
     });
 }
@@ -80,16 +120,14 @@ function getTileCoordinates(tile) {
     console.log([parseInt(i, 10), parseInt(j, 10)]);
     return [parseInt(i, 10), parseInt(j, 10)];
 }
-const playerBoard = document.querySelector('#grid-1');
-const ships = player1.gameBoard.ships;
+
+// these variables probably should be inside of something
+let playerBoard = document.querySelector('#grid-1');
+let ships = player1.gameBoard.ships;
 let currentShipIndex = 0;
 let on_board_array = [];
+
 function playerSetup() {
-    ///////////////////////////////////////////////////
-    // PROBLEM: MOUSEOUT DELETES ANYTHING FROM THE BOARD
-    // SOLUTION: CREATE AN ARRAY OF PLACED SHIPS, ADD SHIP TO ARRAY ONCE SHIP IS PLACED
-    //           IF ARRAY CONTAINS CURRENTSHIP, THEN MOUSEOUT DOESN'T WORK
-    //NOW we know how to temporarily place
     placeShipEventListeners();
 }
 // here is an alternate version of what i'm doing above
@@ -145,7 +183,6 @@ function handleMouseOut(event) {
                     x,
                     y,
                     currentShip[1],
-                    // currentShip[2]
                     shipOrientation
                 );
                 domManager1.updateBoard();

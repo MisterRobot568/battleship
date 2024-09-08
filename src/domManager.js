@@ -22,9 +22,12 @@ class DomManager {
                 const newTile = document.createElement('div');
                 newTile.setAttribute('class', 'tile');
                 newTile.setAttribute('id', `${this.gridID}-tile-${i}${j}`);
+                newTile.style.backgroundColor = 'lightblue';
 
                 let newTextContent = this.player.gameBoard.board[i][j];
+
                 newTile.textContent = newTextContent;
+                newTile.style.color = 'transparent';
                 // if (typeof newTextContent === 'string') {
                 //     newTile.classList.add('ship');
                 // }
@@ -39,9 +42,30 @@ class DomManager {
                 let currentTile = document.querySelector(
                     `#${this.player.gridID}-tile-${i}${j}`
                 );
+                let newTextContent = this.player.gameBoard.board[i][j];
+                // handles colors of the board if player is human
+                if (this.player.isHuman) {
+                    if (typeof newTextContent === 'string') {
+                        currentTile.style.backgroundColor = 'green';
+                    }
+                    if (newTextContent === 0) {
+                        currentTile.style.backgroundColor = 'lightblue';
+                    }
+                }
+                // handles colors of the board when it is hit
+                if (newTextContent === 2) {
+                    currentTile.style.backgroundColor = 'red';
+                }
+                if (newTextContent === 3) {
+                    currentTile.style.backgroundColor = 'gray';
+                }
                 currentTile.textContent = this.player.gameBoard.board[i][j];
             }
         }
+    }
+    clearBoard() {
+        // should i straight up delete the board for reset?
+        this.boardHTML.innerHTML = '';
     }
     updateClassList() {
         // the purpose of this method is so that when a player is putting ships on the
@@ -65,6 +89,18 @@ class DomManager {
     announceWinner() {
         // this method will create a screen for whoever won the game at the end
         // probably with a button to play again
+        const modal = document.querySelector('#modal');
+        const modalTitle = document.querySelector('#modal-title');
+        const modalParagraph = document.querySelector('#modal-paragraph');
+
+        let titleMessage = this.player.isHuman
+            ? 'Human wins'
+            : 'Machine supremacy';
+        let modalParagraphMessage = `${this.player.playerID} wins`;
+
+        modalTitle.textContent = titleMessage;
+        modalParagraph.textContent = modalParagraphMessage;
+        modal.style.display = 'flex';
     }
 }
 

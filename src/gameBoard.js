@@ -84,28 +84,22 @@ class GameBoard {
         }
     }
 
-    generateRandomSetup() {
-        // given a list of ships, generate a random setup for them
-        let ships = this.ships;
-        for (let i = 0; i < ships.length; i++) {
-            // let {name, length} = ships[i]
-            // placeShipRandomly(ships[i][0], ships[i][1], ships[i][2]);
-            placeShipRandomly.call(this, ships[i][0], ships[i][1], ships[i][2]);
-            //UNDERSTAND WHY WE'RE USING "CALL" and "THIS" HERE
-        }
-        function placeShipRandomly(shipName, length, horizontal) {
-            const randomX = Math.floor(Math.random() * 10);
-            const randomY = Math.floor(Math.random() * 10);
-            try {
-                this.placeShip(shipName, randomX, randomY, length, horizontal);
-            } catch (error) {
-                // return placeShipRandomly(shipName, length, horizontal);
-                placeShipRandomly.call(this, shipName, length, horizontal);
-            }
-        }
+    clearBoard() {
+        // this method will clear the gameboard
+        this.board = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+        this.shipsMap = new Map();
     }
-    // takes a pair of coordinates, determines if the attack hit a ship
-    // sends hit function to the correct ship, or records coords of missed shot
 
     // how should we record coords of missed shot? just on the map board itself or
     // in a datastructure?
