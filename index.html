@@ -7,6 +7,19 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
+        <!-- <div class="modal" id="modal">
+            test modal
+            <button class="modal-button" id="modal-button">test button</button>
+        </div> -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <!-- <span class="close-button" id="close">&times;</span> -->
+                <h2 id="modal-title"></h2>
+                <p id="modal-paragraph"></p>
+                <button id="modal-button" type="button">Play Again?</button>
+            </div>
+        </div>
+
         <div class="container">
             <div class="board" id="board-1">
                 <h2>Player Board</h2>
@@ -21,6 +34,9 @@
                 </div>
             </div>
         </div>
+        <button id="rotate-btn" type="button">Rotate Ship</button>
+        <button id="reset-btn" type="button">Reset Game</button>
+
         <script src="./main.js"></script>
     </body>
 </html>
