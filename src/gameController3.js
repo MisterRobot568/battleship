@@ -33,32 +33,6 @@ function startGame() {
     botSetup();
     playerSetup();
 }
-function resetGame() {
-    // clear the boards of the players
-    domManager1.clearBoard();
-    domManager2.clearBoard();
-
-    // reset players
-    player1 = new Player('player1', 'grid-1', true);
-    player2 = new Player('player2', 'grid-2', false);
-
-    //reset player doms
-    domManager1 = new DomManager(player1);
-    domManager2 = new DomManager(player2);
-
-    // render new boards
-    domManager1.renderBoard();
-    domManager2.renderBoard();
-
-    // reset vars associated with event listeners
-    playerBoard = document.querySelector('#grid-1');
-    ships = player1.gameBoard.ships;
-    currentShipIndex = 0;
-    on_board_array = [];
-    placeAble = false;
-
-    startGame();
-}
 
 function rotateShip() {
     // swaps the orienation of the ship player is trying to place
@@ -96,17 +70,14 @@ function attackLoop() {
         // 2) we check if player has won
         if (player2.gameBoard.shipsSunk()) {
             // PLAYER WIN CONDITION
-            console.log('player1 wins'); // WIN TRIGGERS PROPERLY
             domManager1.announceWinner();
         }
 
         player1.botAttack();
         domManager1.updateBoard();
         // check if bot has won
-        console.log(player1.gameBoard.shipsSunk());
         if (player1.gameBoard.shipsSunk()) {
             // BOT WIN CONDITION
-            console.log('bot wins');
             domManager2.announceWinner();
         }
     });
@@ -114,10 +85,7 @@ function attackLoop() {
 
 // returns the coordinates of a tile given the tile itself
 function getTileCoordinates(tile) {
-    console.log(tile);
     const [i, j] = tile.id.split('-').pop().split('');
-    console.log(tile.id);
-    console.log([parseInt(i, 10), parseInt(j, 10)]);
     return [parseInt(i, 10), parseInt(j, 10)];
 }
 
@@ -134,16 +102,10 @@ function playerSetup() {
 function handleMouseOver(event) {
     const tile = event.target;
     if (tile.classList.contains('tile')) {
-        // placeAble = true;
         //makes sure we're on a tile and in between
         const [y, x] = getTileCoordinates(tile);
         const currentShip = ships[currentShipIndex];
 
-        // if (tile.classList.contains('ship')) {
-        //     // if ship is already there, do nothing
-        //     // if ship would be placed out of bounds, do nothing
-        //     return;
-        // } else {
         try {
             // if hovering a ship gives us an error, then don't
             player1.gameBoard.placeShip(
@@ -167,9 +129,6 @@ function handleMouseOut(event) {
     if (tile.classList.contains('tile')) {
         //makes sure we're on a tile and not in between
 
-        // if (on_board_array.contains[currentShip[0]]) {
-        //     return;
-        // }
         if (tile.classList.contains('ship')) {
             // if we're hovering an already placed(clicked) ship, skip
             return;
@@ -188,10 +147,6 @@ function handleMouseOut(event) {
                 domManager1.updateBoard();
             }
         }
-        // PROBLEM: we have made it so that .deleteShip will ignore a ship where
-        //          our cursor is, but delete parts of the ship where our cursor is
-        //          is not
-        // SOLUTION:
     }
 }
 
@@ -204,25 +159,14 @@ function handleMouseClick(event) {
     // IF SHIP NOT ACTUALLY PLACED, THEN WE DON'T REACT TO CLICK
     const tile = event.target;
     if (tile.classList.contains('tile')) {
-        // deactive hover effects when clicked
-        // if (~tile.classList.contains('ship')) {
-        //     return;
-        // } else {
+        // deactive hover and unhover listener when clicked
         if (placeAble) {
             playerBoard.removeEventListener('mouseover', handleMouseOver);
             playerBoard.removeEventListener('mouseout', handleMouseOut);
 
-            // const [y, x] = getTileCoordinates(tile);
             const currentShip = ships[currentShipIndex];
             on_board_array.push(currentShip[0]);
 
-            // player1.gameBoard.placeShip(
-            //     currentShip[0],
-            //     x,
-            //     y,
-            //     currentShip[1],
-            //     currentShip[2]
-            // );
             domManager1.updateClassList();
             // this will add the current
 
@@ -258,9 +202,6 @@ function removeEventListeners() {
     playerBoard.removeEventListener('click', handleMouseClick);
     rotateBtn.removeEventListener('click', rotateShip);
     attackLoop(); // attack loop starts after player places all pieces
-    console.log(
-        'All ships placed. Event listeners removed. AttackLoop() called'
-    );
 }
 
 module.exports = { startGame };

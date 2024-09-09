@@ -11,10 +11,6 @@ class DomManager {
         // console.log(this.player.gridID);
         // this.gridID = playerGridID;
     }
-    printTest() {
-        // console.log(this.gridID);
-        console.log(this.player.gridID);
-    }
     renderBoard() {
         // const boardHTML = document.querySelector(`#${this.gridID}`);
         for (let i = 0; i < 10; i++) {
@@ -28,9 +24,6 @@ class DomManager {
 
                 newTile.textContent = newTextContent;
                 newTile.style.color = 'transparent';
-                // if (typeof newTextContent === 'string') {
-                //     newTile.classList.add('ship');
-                // }
 
                 this.boardHTML.appendChild(newTile);
             }
