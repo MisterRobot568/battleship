@@ -8,8 +8,6 @@ class DomManager {
         this.player = player;
         this.boardHTML = document.querySelector(`#${player.gridID}`);
         this.gridID = this.player.gridID;
-        // console.log(this.player.gridID);
-        // this.gridID = playerGridID;
     }
     renderBoard() {
         // const boardHTML = document.querySelector(`#${this.gridID}`);

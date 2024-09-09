@@ -14,9 +14,6 @@ class Player {
             ['Submarine', 3, true],
             ['Patrol Boat', 2, false],
         ];
-
-        // bind handleclick method to the instance of the player classoka
-        // this.handleClick = this.handleClick.bind(this);
         this.myTurn = false; // don't need?
         this.isHuman = isHuman; // don't need?
     }
@@ -50,10 +47,7 @@ class Player {
         let ships = this.ships;
         let gameBoard = this.gameBoard;
         for (let i = 0; i < ships.length; i++) {
-            // let {name, length} = ships[i]
-            // placeShipRandomly(ships[i][0], ships[i][1], ships[i][2]);
             placeShipRandomly(ships[i][0], ships[i][1], ships[i][2], gameBoard);
-            //UNDERSTAND WHY WE'RE USING "CALL" and "THIS" HERE
         }
         function placeShipRandomly(shipName, length, horizontal, gameBoard) {
             const randomX = Math.floor(Math.random() * 10);
@@ -75,7 +69,6 @@ class Player {
                     length,
                     horizontal
                 );
-                // return placeShipRandomly(shipName, length, horizontal);
                 placeShipRandomly(shipName, length, horizontal, gameBoard);
             }
         }

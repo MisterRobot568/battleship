@@ -17,8 +17,6 @@ let rotateBtn = document.querySelector('#rotate-btn');
 
 function startGame() {
     // initial setup function (where board is set up initially)
-    // initialSetup();
-    // attackLoop();
     let resetGameBtn = document.querySelector('#reset-btn');
     let modalResetGameBtn = document.querySelector('#modal-button');
     resetGameBtn.addEventListener('click', () => {
